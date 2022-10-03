@@ -51,6 +51,6 @@ public class UserServiceImpl implements UserService{
     public List<AppUser> getUser() {
 
         return userRepo.findAll();
-        dhgdfjgjskdghdfk
+
     }
 }
