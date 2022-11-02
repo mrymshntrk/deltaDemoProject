@@ -12,26 +12,39 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+
 @Table(name="department")
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ID;
-    private String Name;
-    private Integer Company_ID;
-    private Integer Department_Type_ID ;
-    private Integer Address_Town;
-    private String Address_Street;
+    @Column(name = "ID")
+    private Long id;
+    @Column(name = "Name")
+    private String name;
 
-    @OneToMany(mappedBy = "deparment")
-    private Set<DepartmentType> departmentTypes;
+    @Column(name = "Address_Street")
+    private String addressStreet;
 
-    @OneToMany(mappedBy = "departmen")
-    private Set<Company> companies;
+    @JoinColumn(name = "Company_ID", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Company company;
 
-    @OneToMany(mappedBy = "department")
-    private Set<Town> towns;
+    @JoinColumn(name = "Department_Type_ID", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    private DepartmentType departmentType;
 
+    @JoinColumn(name = "Address_Town", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Town town;
+
+    public Department(String name,
+                      String addressStreet, Company company,
+                      DepartmentType departmentType, Town town) {
+        this.name = name;
+        this.addressStreet = addressStreet;
+        this.company = company;
+        this.departmentType = departmentType;
+        this.town = town;
+    }
 }
 

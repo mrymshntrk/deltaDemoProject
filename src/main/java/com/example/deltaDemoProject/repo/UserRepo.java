@@ -1,10 +1,12 @@
 package com.example.deltaDemoProject.repo;
 
-import com.example.deltaDemoProject.domain.AppUser;
+import com.example.deltaDemoProject.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepo extends JpaRepository<AppUser, Integer> {
+@Repository
+public interface UserRepo extends JpaRepository<User, Long> {
+    User findUserByEmailAddressAndRole_IdAndDepartment_Id(String email, Long userRoleId, Long departmentId); //findxxby(FieldName)
 
-    AppUser findUserByEmail(String Email_Address);
-
+    User findUserByEmailAddress(String email);
 }

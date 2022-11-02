@@ -12,22 +12,35 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name="company")
 public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ID;
-    private Integer Company_Type_ID;
-    private Integer Address_Town;
-    private String Name;
-    private String Short_Name;
-    private String Address_Street;
+    @Column(name = "ID")
+    private Long id;
+    @Column(name = "Name")
+    private String name;
+    @Column(name = "Short_Name")
+    private String shortName;
+    @Column(name = "Address_Street")
+    private String addressStreet;
 
-    @OneToMany(mappedBy = "company")
-    private Set<CompanyType> companyTypes;
+    @JoinColumn(name = "Company_Type_ID", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    private CompanyType companyType;
 
-    @OneToMany(mappedBy = "company")
-    private Set<Town> towns;
+    @JoinColumn(name = "Address_Town", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Town town;
+
+    public Company(String name, String shortName,
+                   String addressStreet, CompanyType companyType, Town town) {
+
+        this.name = name;
+        this.shortName = shortName;
+        this.addressStreet = addressStreet;
+        this.companyType = companyType;
+        this.town = town;
+    }
 }

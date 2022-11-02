@@ -2,8 +2,10 @@ package com.example.deltaDemoProject.repo;
 
 import com.example.deltaDemoProject.domain.DepartmentType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface DepartmentTypeRepo extends JpaRepository<DepartmentType, Integer> {
+@Repository
+public interface DepartmentTypeRepo extends JpaRepository<DepartmentType, Long> {
 
-    DepartmentType findDepartmentTypeByName (String Name);
+    DepartmentType findDepartmentTypeByName (String name);
 }

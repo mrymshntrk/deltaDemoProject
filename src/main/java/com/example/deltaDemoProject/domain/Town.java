@@ -6,26 +6,32 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name="town")
 public class Town {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ID;
-    private String Name;
-    private Integer Region_ID;
-    private Integer City_ID;
+    @Column(name = "ID")
+    private Long id;
+    @Column(name = "Name")
+    private String name;
 
-    @OneToMany(mappedBy = "town")
-    private Set<Region> regions;
+    @JoinColumn(name = "Region_ID", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Region region;
 
-    @OneToMany(mappedBy = "town")
-    private Set<City> cities;
+    @JoinColumn(name = "City_ID", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    private City city;
+
+    public Town(String name, Region region, City city) {
+        this.name = name;
+        this.region = region;
+        this.city = city;
+    }
 }

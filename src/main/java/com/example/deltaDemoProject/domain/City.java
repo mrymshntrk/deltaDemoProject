@@ -11,13 +11,19 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name="city")
-
 public class City {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ID;
-    private String Name;
+    @Column(name = "ID")
+    private Long id;
+    @Column(name = "Name")
+    private String name;
+
+    public City(String name) {
+        this.name = name;
+    }
+
+
 }

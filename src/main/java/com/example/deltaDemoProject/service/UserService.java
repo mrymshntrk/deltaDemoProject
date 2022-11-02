@@ -1,20 +1,16 @@
 package com.example.deltaDemoProject.service;
 
-import com.example.deltaDemoProject.domain.AppUser;
-import org.springframework.stereotype.Service;
+import com.example.deltaDemoProject.domain.ERole;
+import com.example.deltaDemoProject.domain.User;
+import com.example.deltaDemoProject.payload.request.UserRequest;
+import org.springframework.http.ResponseEntity;
 
-import javax.persistence.SequenceGenerator;
 import java.util.List;
 
 
 public interface UserService {
 
-    //neler yapmak istiyorsak onları oluşturuyoruz.
-
-    AppUser saveUser(AppUser user); //db'ye user kaydeden methot
-    void addRoleToUser(String UserName, String roleName); //user'a role ekle.
-    void addDepartmentToUser(String UserName, String departmentName); //user'a dept. ekle.
-    AppUser getUser(String Email_Address); //db'den user getirir.
-    List<AppUser>getUser();
-
+    ResponseEntity<String> saveUser(UserRequest userRequest);
+    User getCurrentUser();
+    public boolean isCurrentUserHasRole(ERole role);
 }

@@ -1,11 +1,13 @@
 package com.example.deltaDemoProject.service;
 
-import com.example.deltaDemoProject.domain.Town;
+
+import com.example.deltaDemoProject.payload.request.TownRequest;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 public interface TownService {
 
-    Town saveTown(Town town);
+    ResponseEntity<String> saveTown(TownRequest townRequest);
 
-    void addRegionToTown(String townName, String regionName);
-    void addCityToTown(String townName, String cityName);
 }

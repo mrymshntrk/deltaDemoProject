@@ -1,36 +1,52 @@
 package com.example.deltaDemoProject.service;
 
-import com.example.deltaDemoProject.domain.Department;
-import com.example.deltaDemoProject.repo.CompanyRepo;
-import com.example.deltaDemoProject.repo.DepartmentRepo;
-import com.example.deltaDemoProject.repo.TownRepo;
-import com.example.deltaDemoProject.repo.UserRepo;
+import com.example.deltaDemoProject.domain.*;
+import com.example.deltaDemoProject.payload.request.DepartmentRequest;
+import com.example.deltaDemoProject.repo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service @RequiredArgsConstructor @Transactional @Slf4j
 public class DepartmentServiceImpl implements DepartmentService{
 
-    private final UserRepo userRepo;
     private final DepartmentRepo departmentRepo;
-    private final TownRepo townRepo;
     private final CompanyRepo companyRepo;
-
+    private final DepartmentTypeRepo departmentTypeRepo;
+    private final TownRepo townRepo;
+    private final UserService userService;
     @Override
-    public Department saveDepartment(Department department) {
-        return null;
+    public ResponseEntity<String> saveDepartment(DepartmentRequest req){
+
+        User currentUser = userService.getCurrentUser();
+        if(!userService.isCurrentUserHasRole(ERole.Admin)){
+            return ResponseEntity.badRequest().body("Bu islemi yapmak icin yetkiniz yok.");
+        }
+        Company company = companyRepo.findById(req.getCompanyId()).orElse(null);
+        if (company == null) {
+            return ResponseEntity.badRequest().body("böyle bir company bulunamadı");
+        }
+        DepartmentType departmentType= departmentTypeRepo.findById(req.getDepartmentTypeId()).orElse(null);
+        if (departmentType == null) {
+            return ResponseEntity.badRequest().body("böyle bir departmentType bulunamadı");
+        }
+        Town town = townRepo.findById(req.getTownId()).orElse(null);
+        if(town == null){
+            return ResponseEntity.badRequest().body("böyle bir town bulunamadı.");
+        }
+        Department department = departmentRepo.findDepartmentByNameAndCompany_IdAndDepartmentType_IdAndTown_Id(req.getName(), req.getCompanyId(), req.getDepartmentTypeId(), req.getTownId());
+        if (department != null) {
+            return ResponseEntity.badRequest().body("böyle bir department mevcut");
+        }
+
+        departmentRepo.save(new Department(req.getName(),
+                req.getAddressStreet(),
+                company, departmentType, town));
+        return ResponseEntity.ok("kayıt başarılı");
     }
 
-    @Override
-    public void addCompanyToDepartment(String departmentName, String companyName) {
-
-    }
-
-    @Override
-    public void addDepartmentTypeToDepartment(String departmentName, String departmentTypeName) {
-
-    }
 }

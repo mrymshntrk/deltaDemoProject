@@ -11,12 +11,19 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+
 @Table(name="department_type")
 
 public class DepartmentType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ID;
-    private String Name;
+    @Column(name = "ID")
+    private Long id;
+    @Column(name = "Name")
+    private String name;
+
+    public DepartmentType(String name) {
+
+        this.name = name;
+    }
 }

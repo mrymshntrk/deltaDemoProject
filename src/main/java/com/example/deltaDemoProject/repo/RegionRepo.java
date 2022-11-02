@@ -3,8 +3,10 @@ package com.example.deltaDemoProject.repo;
 
 import com.example.deltaDemoProject.domain.Region;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface RegionRepo extends JpaRepository<Region, Integer> {
+@Repository
+public interface RegionRepo extends JpaRepository<Region, Long> {
 
-    Region findRegionByName (String Name);
+    Region findRegionByName (String name);
 }

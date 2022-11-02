@@ -9,32 +9,53 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name="user")
-public class AppUser {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Long id;
 
-    private Integer ID;
-    private Integer User_Role_ID;
+    //@Column(name = "name" ->"Name") -> gereksiz -> artik gerekli xd
+    @Column(name = "Name")
+    private String name;
 
-    @Column(nullable = false, insertable = false, updatable = false)
-    private Integer Department_ID;
+    // private static final String SOME_STATIC_VARIABLE = "665165165"; -> convention ornek
+    @Column(name = "Surname")
+    private String surname;
 
-    private String Name;
-    private String Surname;
-    private String UserName;
-    private String Password;
-    private Boolean Is_Active;
-    private String Email_Address;
+    @Column(name = "Password")
+    private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @Column(name = "Is_Active")
+    private Boolean isActive;
+
+    @Column(name = "Email_Address")
+    private String emailAddress;
+
+    @JoinColumn(name = "User_Role_ID", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Role role;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Department_ID", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Department department;
+
+    public User(String name, String surname, String password,
+                Boolean isActive, String emailAddress,
+                Role role, Department department) {
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+        this.isActive = isActive;
+        this.emailAddress = emailAddress;
+        this.role = role;
+        this.department = department;
+    }
 }
+
+/*İD, SAVE, MODİFY, DELETE, GETALL */

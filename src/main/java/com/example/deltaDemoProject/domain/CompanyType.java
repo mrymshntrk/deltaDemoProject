@@ -11,11 +11,18 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+
 @Table(name="company_type")
 public class CompanyType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ID;
-    private String Name;
+    @Column(name = "ID")
+    private Long id;
+    @Column(name = "Name")
+    private String name;
+
+    public CompanyType(String name) {
+
+        this.name = name;
+    }
 }
