@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service @RequiredArgsConstructor @Transactional @Slf4j
 public class DepartmentServiceImpl implements DepartmentService{
@@ -18,12 +17,12 @@ public class DepartmentServiceImpl implements DepartmentService{
     private final CompanyRepo companyRepo;
     private final DepartmentTypeRepo departmentTypeRepo;
     private final TownRepo townRepo;
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     @Override
     public ResponseEntity<String> saveDepartment(DepartmentRequest req){
 
-        User currentUser = userService.getCurrentUser();
-        if(!userService.isCurrentUserHasRole(ERole.Admin)){
+        User currentUser = userServiceImpl.getCurrentUser();
+        if(!userServiceImpl.isCurrentUserHasRole(ERole.Admin)){
             return ResponseEntity.badRequest().body("Bu islemi yapmak icin yetkiniz yok.");
         }
         Company company = companyRepo.findById(req.getCompanyId()).orElse(null);
