@@ -21,7 +21,10 @@ public class AppUser {
 
     private Integer ID;
     private Integer User_Role_ID;
+
+    @Column(nullable = false, insertable = false, updatable = false)
     private Integer Department_ID;
+
     private String Name;
     private String Surname;
     private String UserName;
