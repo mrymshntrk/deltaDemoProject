@@ -21,13 +21,13 @@ public class CompanyServiceImpl implements CompanyService{
     private final CompanyRepo companyRepo;
     private final CompanyTypeRepo companyTypeRepo;
     private final TownRepo townRepo;
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @Override
     public ResponseEntity<String> saveCompany(CompanyRequest req) {
 
-        User currentUser = userService.getCurrentUser();
-        if(!userService.isCurrentUserHasRole(ERole.Admin)){
+        User currentUser = userServiceImpl.getCurrentUser();
+        if(!userServiceImpl.isCurrentUserHasRole(ERole.Admin)){
             return ResponseEntity.badRequest().body("Bu islemi yapmak icin yetkiniz yok.");
         }
         CompanyType companyType = companyTypeRepo.findById(req.getCompanyTypeId()).orElse(null);

@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,17 +25,15 @@ import java.util.Collections;
 
 
 @Service @RequiredArgsConstructor @Transactional @Slf4j
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserDetailsService{
 
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
     private final DepartmentRepo departmentRepo;
-    private final UserService userService;
+    private final BCryptPasswordEncoder encoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-
         User user = userRepo.findUserByEmailAddress(username);
         if (user == null) {
             log.error("user not found!");
@@ -48,11 +47,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     }
 
-    @Override
     public ResponseEntity<String> saveUser(UserRequest req){
 
-        User currentUser = userService.getCurrentUser();
-        if(!userService.isCurrentUserHasRole(ERole.Admin)){
+        if(!isCurrentUserHasRole(ERole.Admin)){
             return ResponseEntity.badRequest().body("Bu islemi yapmak icin yetkiniz yok.");
         }
 
@@ -69,7 +66,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return ResponseEntity.badRequest().body("böyle bir user zaten var");
         }
         userRepo.save(new User(req.getName(), req.getSurname(),
-                req.getPassword(), req.getIsActive(),
+                encoder.encode(req.getPassword()), req.getIsActive(),
                 req.getEmailAddress(), role, department));
         return ResponseEntity.ok("user başarıyla kaydedildi");
     }

@@ -18,12 +18,12 @@ public class TownServiceImpl implements TownService{
     private final TownRepo townRepo;
     private final CityRepo cityRepo;
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     @Override
     public ResponseEntity<String> saveTown(TownRequest req) {
 
-        User currentUser = userService.getCurrentUser();
-        if(!userService.isCurrentUserHasRole(ERole.Admin)){
+        User currentUser = userServiceImpl.getCurrentUser();
+        if(!userServiceImpl.isCurrentUserHasRole(ERole.Admin)){
             return ResponseEntity.badRequest().body("Bu islemi yapmak icin yetkiniz yok.");
         }
         Region region = regionRepo.findById(req.getRegionId()).orElse(null);

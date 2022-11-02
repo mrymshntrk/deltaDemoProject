@@ -1,7 +1,7 @@
 package com.example.deltaDemoProject.api;
 
 import com.example.deltaDemoProject.payload.request.UserRequest;
-import com.example.deltaDemoProject.service.UserService;
+import com.example.deltaDemoProject.service.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +16,10 @@ import javax.validation.Valid;
 @RequestMapping("/api")
 public class UserController {
 
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @PostMapping("/user/save")
     public ResponseEntity<String> saveUser(@Valid @RequestBody UserRequest userRequest){
-        return userService.saveUser(userRequest);
+        return userServiceImpl.saveUser(userRequest);
     }
 }

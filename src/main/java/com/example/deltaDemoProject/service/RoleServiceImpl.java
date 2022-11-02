@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.security.PublicKey;
 import java.util.List;
 
 @Service
@@ -20,13 +19,13 @@ import java.util.List;
 @Slf4j
 public class RoleServiceImpl implements RoleService{
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final RoleRepo roleRepo;
 
     @Override
     public ResponseEntity<String> saveRole(RoleRequest req) {
-        User currentUser = userService.getCurrentUser();
-        if(!userService.isCurrentUserHasRole(ERole.Admin)){
+        User currentUser = userServiceImpl.getCurrentUser();
+        if(!userServiceImpl.isCurrentUserHasRole(ERole.Admin)){
             return ResponseEntity.badRequest().body("Bu islemi yapmak icin yetkiniz yok.");
         }
 
